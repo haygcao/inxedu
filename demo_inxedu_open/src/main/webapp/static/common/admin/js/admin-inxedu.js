@@ -27,4 +27,30 @@ function dialog(title,context,index,callback,height) {
 		}
 	});
 }
-
+//文字横向滚动
+function ScrollImgLeft() {
+    var speed = 50;
+    var scroll_begin = document.getElementById("scroll_begin");
+    var scroll_end = document.getElementById("scroll_end");
+    var scroll_div = document.getElementById("scroll_div");
+    scroll_end.innerHTML = scroll_begin.innerHTML;
+    function Marquee(){
+        if(scroll_div.scrollLeft-scroll_end.offsetWidth>=0){
+            scroll_div.scrollLeft-=scroll_begin.offsetWidth;
+        }
+        else{
+            scroll_div.scrollLeft++;
+        }
+    }
+    var MyMar = setInterval(Marquee, speed)//设置定时器
+    scroll_div.onmouseover = function () {
+        clearInterval(MyMar)
+    }
+    scroll_div.onmouseout = function () {
+        MyMar = setInterval(Marquee, speed)
+    }
+    $(".not-close").click(function(){
+        $(".Notice").remove();
+        $(".s-main").css("padding-top",$("#header").height());
+    })
+}

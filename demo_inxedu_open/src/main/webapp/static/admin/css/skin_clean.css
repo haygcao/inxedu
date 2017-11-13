@@ -1819,3 +1819,9 @@ button.ui-state-default.ui-corner-all:hover, button.ui-state-default.ui-corner-a
 .c-more-box .c-more-list li a {font-size: 12px; font-family: "Microsoft YaHei";color: #333;line-height: 30px;}
 .c-more-box .c-more-list li a:hover {color: #ea562e; text-decoration: none;}
 .c-more-box:hover .c-more-list {display: block;}
+.Notice{height: 40px;border: 1px solid #ff6600;background-color: #fff9dd;width: 100%;position: relative;}
+.not-warp{height: 40px;overflow: hidden;width: 70%;margin: 0 auto;}
+.not-warp-in{width: 4000%;height: 40px;}
+.Notice .p-txt{padding: 0 30px;color: #ff6600;display: block;white-space: nowrap;height: 40px;float: left;line-height: 36px;width: auto;overflow: hidden;}
+.not-close{position: absolute;width: 20px;height: 20px;top:0;right: 0;display: block;}
+.not-close img{display: block;width: 100%;height: 100%;}
