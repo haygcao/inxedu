@@ -72,6 +72,52 @@
                 }
             });
         }
+
+        /**
+         * 音频上传控件加载
+         * @param controlId
+         * @param ids
+         * @param errId
+         */
+        function uploadAudios(controlId,ids,errId){
+            $("#"+controlId).uploadify({
+                'uploader' : baselocation+'/static/common/uploadify/uploadify.swf', //上传控件的主体文件，flash控件  默认值='uploadify.swf'
+                'script'  :'<%=uploadServerUrl%>/video/uploadaudio',
+                'scriptData':{"fileType":"mp3","param":"audio"},
+                'queueID' : errId, //文件队列ID
+                'fileDataName' : 'uploadfile', //您的文件在上传服务器脚本阵列的名称
+                'auto' : true, //选定文件后是否自动上传
+                'multi' :false, //是否允许同时上传多文件
+                'hideButton' : false,//上传按钮的隐藏
+                'buttonText' : 'Browse',//默认按钮的名字
+                'buttonImg' : '/static/common/uploadify/liulan.png',//使用图片按钮，设定图片的路径即可
+                'width' : 105,
+                'simUploadLimit' : 3,//多文件上传时，同时上传文件数目限制
+                'sizeLimit' : 51200000,//控制上传文件的大小
+                'queueSizeLimit' : 3,//限制在一次队列中的次数（可选定几个文件）
+                'fileDesc' : '支持格式:mp3',//出现在上传对话框中的文件类型描述
+                'fileExt' : '*.mp3',//支持的格式，启用本项时需同时声明fileDesc
+                'folder' : '/upload',//您想将文件保存到的路径
+                'cancelImg' : '/static/common/uploadify/cancel.png',
+                onSelect : function(event, queueID,fileObj) {
+                    fileuploadIndex = 1;
+                    $("#"+errId).html("");
+                    if (fileObj.size > 51200000) {
+                        alert("文件太大最大限制51200kb");
+                        return false;
+                    }
+                },
+                onComplete : function(event,queueID, fileObj, response,data) {
+                    alert("上传成功");
+                    var obj = eval('(' + response + ')');
+                    $("#"+ids).val(obj.url);
+                    $("#"+ids).show();
+                },
+                onError : function(event, queueID, fileObj,errorObj) {
+                    $("#"+errId).html("<br/><font color='red'>"+ fileObj.name + "上传失败</font>");
+                }
+            });
+        }
 </script>
 </head>
 <body>
@@ -144,11 +190,12 @@
 										<td style="text-align: left;">
 											<select id="fileType" name="courseKpoint.fileType" onchange="chooseFileType()">
 												<option value="VIDEO">视频</option>
+												<option value="AUDIO">音频</option>
 												<option value="TXT">文本</option>
 											</select>
 										</td>
 									</tr>
-									<tr style="display:none" class="tr_all videoType ">
+									<tr style="display:none" class="tr_all videoType">
 										<td>视频类型:</td>
 										<td style="text-align: left;">
 											<select id="courseKpointVideoType" name="courseKpoint.videoType" >
@@ -170,11 +217,24 @@
 											</div>
 										</td>
 									</tr>
+									<%--音频  开始--%>
+									<tr class="tr_all tr_fileType_control uploadaudio" style="display: none;">
+										<td>上传进度:</td>
+										<td style="text-align: left;">
+											<input type="file" id="controlId" class="vam"/>
+											<font color="red vam ml10">请上传mp3文件（<a target="_blank" href="http://www.ckplayer.com/manual/12/66.htm">边下边播文档</a>）</font>
+											<div id="errId" class="mt10">
+											</div>
+										</td>
+									</tr>
+									<%--音频  结束--%>
 									<tr style="display:none" class="tr_all videoType">
 										<td id="videoUrlTitle">视频地址:</td>
 										<td style="text-align: left;">
 											<input type="text" name="courseKpoint.videoUrl" id="videourl" value="" style="width: 360px;"/>
 									</tr>
+
+
 									<tr class="tr_all txtContent" style="display: none;">
 										<td>文本内容:</td>
 										<td><textarea id="content" name="courseKpoint.content" rows="" cols=""></textarea></td>
@@ -209,14 +269,13 @@
 										</td>
 									</tr>
 									<tr class="tr_all videoType" id="teacherTr">
-										<td>视频讲师:</td>
+										<td>讲师:</td>
 										<td style="text-align: left;">
 											<input type="hidden" name="courseKpoint.teacherId" value="0" />
 											<p id="teacher" style="margin: 0 0 0em;"></p>
 											<a href="javascript:void(0)" onclick="selectTeacher('radio')">选择老师</a>
 										</td>
 									</tr>
-
 									<tr>
 										<td colspan="2">
 											<button class="ui-state-default ui-corner-all" style="float: left;" onclick="updateKpoint()" type="button">确定</button>

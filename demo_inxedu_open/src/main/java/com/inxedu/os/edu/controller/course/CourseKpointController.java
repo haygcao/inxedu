@@ -31,7 +31,8 @@ import java.util.Map;
 public class CourseKpointController extends BaseController {
 	private static final Logger logger = LoggerFactory.getLogger(CourseKpointController.class);
 
-
+	private static final String playAudioAjax=getViewPath("/web/course/play_audio_ajax");//加载播放大厅音频地址
+	private static final String playAudioAjaxMobile=getViewPath("/web/course/play_audio_ajax_mobile");//手机 加载播放大厅音频地址
 	private static final String getKopintHtml = getViewPath("/web/course/videocode");// 课程播放
 	private static final String callBack56Uploading = getViewPath("/course/callBack56_uploading");//56视频上传回调
 	private static final String playTxtAjax=getViewPath("/web/playCourse/play_txt_ajax");//加载播放大厅文本
@@ -67,6 +68,7 @@ public class CourseKpointController extends BaseController {
 			}
 			model.addAttribute("courseKpoint",courseKpoint);
 			model.addAttribute("course",course);
+
 			//视频
 			if("VIDEO".equals(courseKpoint.getFileType())){
 				// 视频url
@@ -105,6 +107,14 @@ public class CourseKpointController extends BaseController {
             //判断是否为手机浏览器
             boolean isMoblie = JudgeIsMoblie(request);
             model.addAttribute("isMoblie", isMoblie);
+
+			//音频
+			if("AUDIO".equals(courseKpoint.getFileType())){
+				if(isMoblie){
+					return playAudioAjaxMobile;
+				}
+				return playAudioAjax;
+			}
 
 			return getKopintHtml;
 		} catch (Exception e) {
