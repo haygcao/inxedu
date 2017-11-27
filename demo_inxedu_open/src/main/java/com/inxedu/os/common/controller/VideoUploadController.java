@@ -3,29 +3,19 @@ package com.inxedu.os.common.controller;
 import com.inxedu.os.common.constants.CommonConstants;
 import com.inxedu.os.common.util.DateUtils;
 import com.inxedu.os.common.util.FileUploadUtils;
-import com.inxedu.os.common.util.PDFUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.CropImageFilter;
-import java.awt.image.FilteredImageSource;
-import java.awt.image.ImageFilter;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
 
 /**
  * @author www.inxedu.com
@@ -81,7 +71,43 @@ public class VideoUploadController extends BaseController{
 		}
 	}
 
+	/**
+	 * 使用上传音频
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/uploadaudio",method={RequestMethod.POST})
+	public String uploadAudio(HttpServletRequest request,HttpServletResponse response,@RequestParam(value="uploadfile" ,required=true) MultipartFile uploadfile,
+							  @RequestParam(value="param",required=false) String param,
+							  @RequestParam(value="fileType",required=true) String fileType){
+		try{
 
+			String[] type = fileType.split(",");
+			//设置图片类型
+			setFileTypeList(type);
+			//获取上传文件类型的扩展名,先得到.的位置，再截取从.的下一个位置到文件的最后，最后得到扩展名
+			String ext = FileUploadUtils.getSuffix(uploadfile.getOriginalFilename());
+			if(!fileType.contains(ext)){
+				return responseErrorData(response,1,"文件格式错误，上传失败。");
+			}
+			//获取文件路径
+			String filePath = getPath(request,ext,param);
+			File file = new File(getProjectRootDirPath(request)+filePath);
+
+			//如果目录不存在，则创建
+			if(!file.getParentFile().exists()){
+				file.getParentFile().mkdirs();
+			}
+			//保存文件
+			uploadfile.transferTo(file);
+			//返回数据
+
+			return responseData(filePath,0,"上传成功",response);
+		}catch (Exception e) {
+			logger.error("gok4()--error",e);
+			return responseErrorData(response,2,"系统繁忙，上传失败");
+		}
+	}
 
 
 	//--------------------------------------------------------------------------------------

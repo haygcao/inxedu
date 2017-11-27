@@ -37,6 +37,7 @@ $(function(){
 	});
     courseKpointVideoTypechange();
     uploadPicLoad('fileupload','videourl','fileQueue');
+    uploadAudios('controlId','videourl','errId');
 });
 
 /**
@@ -218,7 +219,10 @@ function updateKpoint(){
 		} else if (fileType == "VIDEO" && isEmpty($("#videourl").val())) {
 			alert("请填写视频地址");
 			return;
-		}
+		}if (fileType == "AUDIO" && isEmpty($("#videourl").val())) {
+            alert("请填写音频地址");
+            return;
+        }
 	}
 
 
@@ -479,9 +483,20 @@ function chooseFileType(){
 	$("#fileType").parent().parent().show();
 	if(fileType=='VIDEO'){//选择视频格式
 		$(".videoType").show();
+        $(".uploadVideo").show();
+        $(".uploadaudio").hide();
+        $("#videoUrlTitle").html("视频地址");
 		var videoType=$("#videotype").val();
-	}else if(fileType=='TXT'){//选择文本格式
+	}else if(fileType=='AUDIO'){//选择音频格式
+        $(".videoType").show();
+        $(".uploadaudio").show();
+        $(".uploadVideo").hide();
+        $("#courseKpointVideoType").parent().parent().hide();
+        $("#videoUrlTitle").html("音频地址");
+        var audioType=$("#audioType").val();
+    }else if(fileType=='TXT'){//选择文本格式
 		$(".txtContent").show();
+        $(".uploadVideo").hide();
 		$("input[name='courseKpoint.free']:eq(1)").prop("checked","checked");
 	}
 }

@@ -60,7 +60,11 @@ var vP = function() {
 	var wH = parseInt(document.documentElement.clientHeight, 10);
 	//$("#p-h-box").css("height", wH - 108);
 	$("#p-h-r-cont").css("height", wH - 213);
-	$(".p-h-video").css("height", wH - 180);
+    if(checkIsMobile()){
+        $(".p-h-video").css("height", "240px");
+    }else {
+        $(".p-h-video").css("height", wH - 180);
+    }
 }
 // 右侧菜单区域显示与隐藏
 var rmFun = function() {
@@ -131,7 +135,7 @@ function browserRedirect() {
 		var wH = parseInt(document.documentElement.clientHeight, 10);
 		//$("#p-h-box").css("height", wH - 258);
 		$("#p-h-r-cont").css("height", wH - 363);
-		$(".p-h-video").css("height", wH - 330);
+		$(".p-h-video").css("height", "240px");
 
 		$("#o-c-btn").click(function() {
 			var _this = $(this);
@@ -191,7 +195,7 @@ function getPlayerHtml(kpointId,name,obj) {
 				var wH = parseInt(document.documentElement.clientHeight, 10);
 				//$("#p-h-box").css("height", wH - 258);
 				$("#p-h-r-cont").css("height", wH - 363);
-				$(".p-h-video").css("height", wH - 330);
+				$(".p-h-video").css("height", "240px");
 			}
 			$("#videoPlay").html(result);
 			// 添加播放记录
