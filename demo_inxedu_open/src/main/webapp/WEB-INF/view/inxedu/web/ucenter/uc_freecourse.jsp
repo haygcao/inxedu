@@ -12,7 +12,7 @@
 			<div>
 				<section class="c-infor-tabTitle c-tab-title">
 					<a href="javascript: void(0)" title="Wo的课程" style="cursor: default;">免费课程</a>
-					<a href="${ctx }/uc/freeCourseList" title="免费课程" class="current">免费</a>
+					<a href="${ctx }/uc/index" title="免费课程" class="current">免费</a>
 				</section>
 			</div>
 			<div class="mt40">
@@ -63,7 +63,7 @@
 						<!-- 公共分页 开始 -->
 						<jsp:include page="/WEB-INF/view/common/front_page.jsp" />
 						<!-- 公共分页 结束 -->
-						<form method="post" id="searchForm" action="${ctx}/uc/freeCourseList">
+						<form method="post" id="searchForm" action="${ctx}/uc/index">
 							<input type="hidden" id="pageCurrentPage" name="page.currentPage" value="1" />
 						</form>
 					</div>
